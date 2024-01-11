@@ -1,14 +1,21 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import DDIT from './imges/ddit.png'
 
 const Navbar = () => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            <h1>DDIT</h1>
-          </a>
+        <Link className="navbar-brand" to="/">
+            <img
+              src={DDIT}  // Replace with the path to your logo image
+              alt="Logo"
+              width="50"  // Adjust the width as needed
+              height="50" // Adjust the height as needed
+              // className="d-inline-block align-top"
+            />
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
