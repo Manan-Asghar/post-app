@@ -1,10 +1,10 @@
 import React from "react";
-import Studantlist from "../Components/Studantlist";
+import Studentlist from "../Components/Studentlist";
 
 const About = () => {
   return (
     <div>
-      <Studantlist/>
+      <Studentlist/>
     </div>
   );
 };
