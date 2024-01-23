@@ -4,12 +4,14 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Greetstudent from "./Greetstudent";
+import Details from "./Details";
 const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/details/:id" element={<Details/>}/>
       <Route path="/about/studentlist/:student_name" element={<Greetstudent/>}/>
     </Routes>
   );

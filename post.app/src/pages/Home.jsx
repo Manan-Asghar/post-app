@@ -1,10 +1,11 @@
 import React from "react";
+import Bennar from "../Components/Banner";
 
 const Home = () => {
   return (
-    <div>
-      <h1>post.app</h1>
-    </div>
+    <>
+      <Bennar/>
+    </>
   );
 };
 
