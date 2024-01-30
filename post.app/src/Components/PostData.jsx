@@ -1,53 +1,84 @@
-import React from 'react';
-import { useState } from 'react';
-import Post from './Post'; // Import the Post component
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-const PostData = () => {
-    const data = [
-        {
-          userId: 1,
-          id: 1,
-          title:
-            "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-          body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
-        },
-        {
-          userId: 1,
-          id: 2,
-          title: "qui est esse",
-          body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
-        },
-        {
-          userId: 1,
-          id: 3,
-          title: "ea molestias quasi exercitationem repellat qui ipsa sit aut",
-          body: "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut",
-        },
-        {
-          userId: 1,
-          id: 4,
-          title: "eum et est occaecati",
-          body: "ullam et saepe reiciendis voluptatem adipisci\nsit amet autem assumenda provident rerum culpa\nquis hic commodi nesciunt rem tenetur doloremque ipsam iure\nquis sunt voluptatem rerum illo velit",
-        },
-        
-      ];
+export default function PostData() {
+  const [data2, setData2] = useState([]);
+  const [confirm, setConfirm] = useState(false);
+  const [error, setISerror] = useState("");
+  const [postdelete, setPostdelete] = useState(null);
+  
 
-    const [posts, setPosts] = useState(data);
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts")
+      .then((res) => setData2(res.data))
+      .catch((error) => setISerror(error.message));
+  }, []);
 
-    const handleDelete = (postId) => {
-        const updatedPosts = posts.filter((post) => post.id !== postId);
-        setPosts(updatedPosts);
-    };
+  const deleteCard = (id) => {
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then((res) => console.log(res, "result"))
+      .catch((error) => setISerror(error.message));
+    const newData = data2.filter((current) => current.id !== id);
+    setData2(newData);
+    setPostdelete(null);
+  };
 
-    return (
+  const confirmMessage = (id) => {
+    setConfirm(true);
+    setPostdelete(id);
+  };
+
+  const hideConfirmMessage = () => {
+    setConfirm(false);
+    setPostdelete(null);
+  };
+
+  return (
+    <div className="container main-card">
+      {error != "" && <h2>{error}</h2>}
+      {data2.map((post) => (
         <>
-            <div className="container main-card">
-                {posts.map((post) => (
-                    <Post key={post.id} post={post} onDelete={handleDelete} />
-                ))}
+          <div className="card mb-3" key={post.id}>
+            <div className="card-body">
+              <h3 className="card-title">
+                {post.id}- {post.title}{" "}
+              </h3>
+              <p className="card-text text-black">{post.body}...</p>
+              <Link to={`/details/${post.id}`} state={{ data2: post }}>
+                <button className="btn btn-success">Details</button>
+              </Link>
+              <button
+                className="btn btn-danger ms-2 delete-btn"
+                onClick={() => {
+                  confirmMessage(post.id);
+                }}
+              >
+                Delete
+              </button>
             </div>
+          </div>
+          {confirm && postdelete === post.id && (
+            <div className="mb-2">
+              <strong>Are you sure ?</strong>
+              <button
+                className="btn btn-danger ms-2"
+                onClick={() => deleteCard(post.id)}
+              >
+                Yes
+              </button>
+              <button
+                className="btn btn-success ms-2"
+                onClick={() => hideConfirmMessage()}
+              >
+                No
+              </button>
+            </div>
+          )}
         </>
-    );
-};
-
-export default PostData;
+      ))}
+    </div>
+  );
+}
