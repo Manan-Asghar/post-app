@@ -4,16 +4,25 @@ import axios from "axios";
 
 export default function PostData() {
   const [data2, setData2] = useState([]);
+  const [loading, setLoading] = useState(false); // Added loading state
   const [confirm, setConfirm] = useState(false);
   const [error, setISerror] = useState("");
   const [postdelete, setPostdelete] = useState(null);
-  
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => setData2(res.data))
-      .catch((error) => setISerror(error.message));
+      .then((res) => {
+        setData2(res.data);
+      })
+      .catch((error) => {
+
+        setISerror(error.message);
+      })
+      .finally(()=>{
+        setLoading(false)
+      })
   }, []);
 
   const deleteCard = (id) => {
@@ -35,12 +44,18 @@ export default function PostData() {
     setConfirm(false);
     setPostdelete(null);
   };
-
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
   return (
     <div className="container main-card">
-      {error != "" && <h2>{error}</h2>}
+      {error !== "" && <h2>{error}</h2>}
+      <Link to="/addpost">
+        <button className="btn btn-primary mb-3">Add Post</button>
+      </Link>
+      
       {data2.map((post) => (
-        <>
+        <div key={post.id}>
           <div className="card mb-3" key={post.id}>
             <div className="card-body">
               <h3 className="card-title">
@@ -77,7 +92,7 @@ export default function PostData() {
               </button>
             </div>
           )}
-        </>
+        </div>
       ))}
     </div>
   );
