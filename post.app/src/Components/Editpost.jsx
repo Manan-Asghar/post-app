@@ -4,7 +4,6 @@ import { useState } from "react";
 import axios from "axios";
 const Editpost = () => {
   const { state } = useLocation();
-  console.log(useLocation(), "location");
   const post = state?.data2;
   const [title, setTitle] = useState(post?.title ? post.title : "");
   const [body, setBody] = useState(post?.body ? post.body : "");
