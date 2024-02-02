@@ -6,6 +6,7 @@ import Contact from "../pages/Contact";
 import Greetstudent from "./Greetstudent";
 import Details from "./Details";
 import Addpost from "./Addpost";
+import Editpost from "./Editpost";
 const Routers = () => {
   return (
     <Routes>
@@ -14,6 +15,7 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/details/:id" element={<Details/>}/>
       <Route path="/addpost" element={<Addpost/>}/>
+      <Route path="/edit/:id" element={<Editpost/>}/>
       <Route path="/about/studentlist/:student_name" element={<Greetstudent/>}/>
     </Routes>
   );

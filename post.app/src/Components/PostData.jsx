@@ -73,6 +73,9 @@ export default function PostData() {
               >
                 Delete
               </button>
+              <Link to={`/edit/${post.id}`} state={{ data2: post }}>
+                <button className="btn btn-warning ms-2">Edit</button>
+              </Link>
             </div>
           </div>
           {confirm && postdelete === post.id && (

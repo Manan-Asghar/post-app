@@ -15,19 +15,15 @@ const Addpost = () => {
     axios.post("https://jsonplaceholder.typicode.com/posts", data)
       .then((response) => {
         setSuccessMessage("Post submitted successfully!");
-        console.log(response.data);
-        // Clear the form
-        setTitle("");
-        setBody("");
-        setUserId("");
-
-        // Navigate to the PostData component
-        
+        console.log(response.data);        
       })
       .catch((error) => {
         console.error(error);
         setErrorMessage("Failed to submit post.");
-      });
+      })
+      .finally(()=>{
+        e.target.reset()
+      })
   };
 
   return (
