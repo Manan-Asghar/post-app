@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 const Editpost = () => {
@@ -34,7 +34,7 @@ const Editpost = () => {
         <h1 className="text-center">Edit Post</h1>
         <form action="">
           <div className="mb-3">
-            <label htmlFor="" className="form-label">
+            <label className="form-label">
               Title
             </label>
             <input
@@ -45,12 +45,13 @@ const Editpost = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="" className="form-label">
+            <label className="form-label">
               Body
             </label>
-            <input
+            <textarea
               type="text"
               className="form-control"
+              rows = '3'
               value={body}
               onChange={handleBodyChange}
             />
@@ -58,6 +59,9 @@ const Editpost = () => {
           <button className="btn btn-primary" onClick={handleSubmit}>
             Update
           </button>
+          <Link to='/'><button className="btn btn-primary m-2">
+          Back
+        </button></Link>
         </form>
       </div>
     </div>
