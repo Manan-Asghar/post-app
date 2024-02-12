@@ -55,6 +55,13 @@ const Editpost = () => {
               value={body}
               onChange={handleBodyChange}
             />
+            <label className="form-label">User ID</label>
+          <input
+            type="number"
+            className="form-control"
+            onChange={(e) => setUserId(e.target.value)}
+            required
+          />
           </div>
           <button className="btn btn-primary" onClick={handleSubmit}>
             Update
