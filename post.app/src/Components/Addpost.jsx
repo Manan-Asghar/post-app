@@ -13,7 +13,7 @@ const Addpost = () => {
     e.preventDefault();
     const data = { title, body, userId };
 
-    axios.post("https://jsonplaceholder.typicode.com/posts", data)
+    axios.post(`{process.env.REACT_APP_API_HOST}`, data)
       .then((response) => {
         setSuccessMessage("Post submitted successfully!");
         console.log(response.data);        
