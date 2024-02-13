@@ -8,29 +8,40 @@ export default function PostData() {
   const [confirm, setConfirm] = useState(false);
   const [error, setISerror] = useState("");
   const [postdelete, setPostdelete] = useState(null);
+  const [start, setStart] = useState(0); // Start index for pagination
+  const [limit, setLimit] = useState(10); // Limit for pagination
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("https://jsonplaceholder.typicode.com/posts")
+      .get("https://jsonplaceholder.typicode.com/posts", {
+        params: {
+          _start: start, // Starting index for pagination
+          _limit: limit, // Number of items to fetch for pagination
+        },
+      })
       .then((res) => {
         setData2(res.data);
       })
       .catch((error) => {
-
         setISerror(error.message);
       })
-      .finally(()=>{
-        setLoading(false)
-      })
-  }, []);
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [start, limit]); // Fetch data when start or limit changes
 
   const deleteCard = (id) => {
+    setLoading(true)
     axios
       .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then((res) => console.log(res, "result"))
-      .catch((error) => setISerror(error.message));
+      .catch((error) => setISerror(error.message))
+      .finally(()=>{
+        setLoading(false)
+      })
     const newData = data2.filter((current) => current.id !== id);
+
     setData2(newData);
     setPostdelete(null);
   };
@@ -44,16 +55,28 @@ export default function PostData() {
     setConfirm(false);
     setPostdelete(null);
   };
+
+  const handleNext = () => {
+    setStart(0); // Reset start index to 0
+    setLimit(limit + 10); // Increase limit by 10
+    setLoading(false);
+  };
+
+  // const handleprevious = () => {
+  //   setStart(start - limit); // Increase start index to fetch next page
+  // };
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
+
   return (
     <div className="container main-card">
       {error !== "" && <h2>{error}</h2>}
       <Link to="/addpost">
         <button className="btn btn-primary mb-3">Add Post</button>
       </Link>
-      
+
       {data2.map((post) => (
         <div key={post.id}>
           <div className="card mb-3" key={post.id}>
@@ -74,7 +97,7 @@ export default function PostData() {
                 Delete
               </button>
               <Link to={`/edit/${post.id}`} state={{ data2: post }}>
-                <button className="btn btn-warning ms-2">Edit</button>
+                <button className="btn btn-dark ms-2">Edit</button>
               </Link>
             </div>
           </div>
@@ -97,6 +120,12 @@ export default function PostData() {
           )}
         </div>
       ))}
+      {/* <button className="btn btn-primary m-3" onClick={handleprevious}>
+      Previous
+      </button> */}
+      <button className="btn btn-primary m-3" onClick={handleNext}>
+        Next
+      </button>
     </div>
   );
 }
