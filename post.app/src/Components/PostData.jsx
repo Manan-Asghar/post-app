@@ -10,6 +10,7 @@ export default function PostData() {
   const [postdelete, setPostdelete] = useState(null);
   const [start, setStart] = useState(0); // Start index for pagination
   const [limit, setLimit] = useState(10); // Limit for pagination
+  const [selectLimit, setSelectLimit] = useState(10); // Limit selected from dropdown
 
   useEffect(() => {
     setLoading(true);
@@ -32,16 +33,15 @@ export default function PostData() {
   }, [start, limit]); // Fetch data when start or limit changes
 
   const deleteCard = (id) => {
-    setLoading(true)
+    setLoading(true);
     axios
       .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then((res) => console.log(res, "result"))
       .catch((error) => setISerror(error.message))
-      .finally(()=>{
-        setLoading(false)
-      })
+      .finally(() => {
+        setLoading(false);
+      });
     const newData = data2.filter((current) => current.id !== id);
-
     setData2(newData);
     setPostdelete(null);
   };
@@ -58,13 +58,15 @@ export default function PostData() {
 
   const handleNext = () => {
     setStart(0); // Reset start index to 0
-    setLimit(limit + 10); // Increase limit by 10
+    setLimit(limit + selectLimit); // Increase limit by selected limit
     setLoading(false);
   };
 
-  // const handleprevious = () => {
-  //   setStart(start - limit); // Increase start index to fetch next page
-  // };
+  const handleSelectChange = (e) => {
+    setSelectLimit(parseInt(e.target.value));
+    setStart(0); // Reset start index when limit changes
+    setLimit(parseInt(e.target.value));
+  };
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -76,6 +78,10 @@ export default function PostData() {
       <Link to="/addpost">
         <button className="btn btn-primary mb-3">Add Post</button>
       </Link>
+
+      <div className="mb-3">
+        
+      </div>
 
       {data2.map((post) => (
         <div key={post.id}>
@@ -120,12 +126,21 @@ export default function PostData() {
           )}
         </div>
       ))}
-      {/* <button className="btn btn-primary m-3" onClick={handleprevious}>
-      Previous
-      </button> */}
+
       <button className="btn btn-primary m-3" onClick={handleNext}>
         Next
       </button>
+        <select
+          className="btn-primary"
+          id="limitSelect"
+          value={selectLimit}
+          onChange={handleSelectChange}
+        >
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+        </select>
     </div>
   );
 }
