@@ -127,6 +127,13 @@ const Editpost = () => {
               onChange={handleUserIdChange}
             />
             {userIdError && <p style={{ color: "red" }}>{userIdError}</p>}
+            <label className="form-label">User ID</label>
+          <input
+            type="number"
+            className="form-control"
+            onChange={(e) => setUserId(e.target.value)}
+            required
+          />
           </div>
           <button className="btn btn-primary" onClick={handleSubmit}>
             {loading ? "Updating..." : "Update"}

@@ -47,16 +47,18 @@ const Addpost = () => {
     // Form submission
     const data = { title: title, body: body, userId: userIdNumber };
 
-    try {
-      await axios.post("https://jsonplaceholder.typicode.com/posts", data);
-      setSuccessMessage("Post submitted successfully!");
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Failed to submit post.");
-    } finally {
-      setLoading(false); // Reset loading state
-      e.target.reset();
-    }
+    axios.post("https://jsonplaceholder.typicode.com/posts", data)
+      .then((response) => {
+        setSuccessMessage("Post submitted successfully!");
+        console.log(response.data);        
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage("Failed to submit post.");
+      })
+      .finally(()=>{
+        e.target.reset()
+      })
   };
 
   return (
